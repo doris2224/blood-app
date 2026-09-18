@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="簡單易用的血壓紀錄工具">
+  <title>血壓日誌</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand-mark" aria-hidden="true">+</div>
+      <div>
+        <p class="eyebrow">PERSONAL HEALTH LOG</p>
+        <h1>血壓日誌</h1>
+      </div>
+      <div class="today-chip" id="todayLabel"></div>
+    </header>
+
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="section-kicker">每天留意，安心多一點</p>
+        <h2 id="page-title">記下今天的身體訊號。</h2>
+        <p class="intro-copy">輸入測量結果，系統會自動標記紀錄時間，讓每一次變化都清楚可見。</p>
+      </div>
+      <div class="pulse-line" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="workspace" aria-label="血壓資料管理">
+      <form class="record-form" id="recordForm">
+        <div class="form-heading">
+          <div>
+            <p class="section-kicker">NEW READING</p>
+            <h2>新增測量</h2>
+          </div>
+          <span class="required-note">* 必填</span>
+        </div>
+
+        <div class="vitals-grid">
+          <label class="field field-primary">
+            <span>收縮壓 <small>mmHg</small></span>
+            <input id="systolic" name="systolic" type="number" min="50" max="250" placeholder="120" required>
+          </label>
+          <label class="field field-primary">
+            <span>舒張壓 <small>mmHg</small></span>
+            <input id="diastolic" name="diastolic" type="number" min="30" max="150" placeholder="80" required>
+          </label>
+          <label class="field">
+            <span>脈搏 <small>bpm</small></span>
+            <input id="pulse" name="pulse" type="number" min="30" max="220" placeholder="72" required>
+          </label>
+        </div>
+
+        <label class="field select-field">
+          <span>藥物治療狀態</span>
+          <select id="medication" name="medication" required>
+            <option value="">請選擇目前狀態</option>
+            <option value="無">無</option>
+            <option value="已服藥">已服藥</option>
+            <option value="未服藥">未服藥</option>
+          </select>
+        </label>
+
+        <label class="field notes-field">
+          <span>備註 <small>選填</small></span>
+          <textarea id="notes" name="notes" rows="3" maxlength="200" placeholder="例如：早餐前測量、今日精神狀況……"></textarea>
+        </label>
+
+        <p class="form-error" id="formError" role="alert"></p>
+        <button class="primary-button" type="submit"><span aria-hidden="true">＋</span> 儲存紀錄</button>
+      </form>
+
+      <section class="history-panel" aria-labelledby="historyTitle">
+        <div class="history-heading">
+          <div>
+            <p class="section-kicker">YOUR HISTORY</p>
+            <h2 id="historyTitle">最近紀錄 <span class="count-badge" id="recordCount">0</span></h2>
+          </div>
+          <button class="text-button" id="clearAllButton" type="button" hidden>清除全部</button>
+        </div>
+        <div class="record-list" id="recordList" aria-live="polite"></div>
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon" aria-hidden="true">⌁</div>
+          <h3>還沒有測量紀錄</h3>
+          <p>完成左側表單後，紀錄會顯示在這裡。</p>
+        </div>
+      </section>
+    </section>
+
+    <footer class="footer-note">紀錄僅供個人追蹤使用，若有不適請諮詢醫療專業人員。</footer>
+  </main>
+</body>
+</html>
