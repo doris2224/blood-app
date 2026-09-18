@@ -1,4 +1,5 @@
 const STORAGE_KEY = 'blood-pressure-records';
+const THEME_KEY = 'theme-preference';
 
 const form = document.querySelector('#recordForm');
 const recordList = document.querySelector('#recordList');
@@ -7,8 +8,11 @@ const recordCount = document.querySelector('#recordCount');
 const clearAllButton = document.querySelector('#clearAllButton');
 const formError = document.querySelector('#formError');
 const todayLabel = document.querySelector('#todayLabel');
+const themeToggle = document.querySelector('#themeToggle');
+const themeLabel = document.querySelector('#themeLabel');
 
 let records = loadRecords();
+applyStoredTheme();
 todayLabel.textContent = formatDate(new Date(), { month: 'long', day: 'numeric' });
 renderRecords();
 
@@ -64,6 +68,11 @@ clearAllButton.addEventListener('click', () => {
   renderRecords();
 });
 
+themeToggle.addEventListener('click', () => {
+  const nextTheme = document.body.dataset.theme === 'light' ? 'dark' : 'light';
+  applyTheme(nextTheme);
+});
+
 function renderRecords() {
   recordList.innerHTML = '';
   recordCount.textContent = records.length;
@@ -102,6 +111,34 @@ function loadRecords() {
 
 function saveRecords() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+}
+
+function applyStoredTheme() {
+  const savedTheme = readThemePreference();
+  applyTheme(savedTheme);
+}
+
+function readThemePreference() {
+  try {
+    const savedTheme = localStorage.getItem(THEME_KEY);
+    return savedTheme === 'light' ? 'light' : 'dark';
+  } catch {
+    return 'dark';
+  }
+}
+
+function applyTheme(theme) {
+  const resolvedTheme = theme === 'light' ? 'light' : 'dark';
+  document.body.dataset.theme = resolvedTheme;
+  themeToggle.setAttribute('aria-pressed', String(resolvedTheme === 'light'));
+  themeLabel.textContent = resolvedTheme === 'light' ? '淺色模式' : '深色模式';
+  themeToggle.classList.toggle('is-light', resolvedTheme === 'light');
+
+  try {
+    localStorage.setItem(THEME_KEY, resolvedTheme);
+  } catch {
+    // Ignore storage errors and keep the UI in the selected theme.
+  }
 }
 
 function formatDate(date, options) {
